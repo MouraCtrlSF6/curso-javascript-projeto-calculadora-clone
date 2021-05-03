@@ -6,9 +6,10 @@ class calcController{
     }
     initialize(){
         let displayCalcEl = document.querySelector('#display');
-        let dateEl = document.querySelector("#date");
-        let timeEl = document.querySelector("#time");
+        let dateEl = document.querySelector("#data");
+        let timeEl = document.querySelector("#hora");
 
+        displayCalcEl.innerHTML = "teste";
         dateEl.innerHTML = '03/05/2021';
         timeEl.innerHTML = '18:39';
     }
