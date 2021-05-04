@@ -5,6 +5,7 @@ class calcController{
         this._timeEl = document.querySelector("#hora");
         this.lang = "pt-BR";
         this.initialize();
+        this.initButtonEvens();
     }
     initialize(){
         this._displayCalcEl.innerHTML = "0";
@@ -20,6 +21,12 @@ class calcController{
             year: "numeric"
         });
         this._timeEl.innerHTML = this.displayTime.toLocaleTimeString(this.lang);
+    }
+    initButtonEvens(){
+        let myButtons = document.querySelectorAll("#buttons > g, #parts > g");
+        myButtons.forEach((btn, index) => btn.addEventListener('click', () =>{
+            console.log(btn.className.baseVal.replace('btn-', ''));
+        }));
     }
     get displayCalc(){
         return this._displayCalcEl.innerHTML;
