@@ -116,7 +116,6 @@ class calcController{
                 this._lastNumber = this._operation[2];
                 this._lastOperator = this._operation[1];
                 this._operation = [myResult];
-                console.log(this._lastOperator + ' ' + this._lastNumber);
                 if (value !== '=') this.pushOperation(value);
             }
         }
