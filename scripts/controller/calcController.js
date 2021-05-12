@@ -35,13 +35,13 @@ class calcController{
     clearEntry(){
         this._operation.pop();
         switch(true){
-            case this._operation.length === 1:
+            case this._operation.length === 0:
                 this.displayCalc = '0';
                 break;
-            case this._operation.length === 2:
+            case this._operation.length === 1:
                 this.displayCalc = this._operation;
                 break;
-            case this._operation.length === 3:
+            case this._operation.length === 2:
                 this._operation.pop();
                 this.displayCalc = this._operation;
                 break;
@@ -52,10 +52,31 @@ class calcController{
     }
     equalOperation(value){
         if(this._operation.length > 3 || value == '='){
-            let myResult = eval(`${this._operation[0]} ${this._operation[1]} ${this._operation[2]}`);
-            this._operation = [];
-            this._operation[0] = myResult;
-            if (value !== '=') this._operation.push(value);
+            if (value === '%'){
+                if (this._operation[1] == '+'){
+                    var myResult = this._operation[0]*this._operation[2]/100;
+                    myResult = this._operation[0] + myResult;
+                }
+                if (this._operation[1] == '-'){
+                    var myResult = this._operation[0]*this._operation[2]/100;
+                    myResult = this._operation[0] - myResult;
+                }
+                if (this._operation[1] == '*'){
+                    var myResult = this._operation[0]*this._operation[2]/100;
+                }
+                if (this._operation[1] == '/'){
+                    var myResult = this._operation[0]*this._operation[2]/100;
+                    myResult = this._operation[0] / myResult;
+                }
+                this._operation = [];
+                this._operation[0] = myResult;
+            } 
+            else{
+                let myResult = eval(`${this._operation[0]} ${this._operation[1]} ${this._operation[2]}`);
+                this._operation = [];
+                this._operation[0] = myResult;
+                if (value !== '=') this._operation.push(value);
+            }
             this.displayCalc = this._operation.join("");
         }
     }
@@ -75,7 +96,8 @@ class calcController{
     addOperation(value){
         if(isNaN(this.getLastOperation())){ 
             if(this.isOperator(value)){ 
-                this.setLastOperation(value) 
+                this.setLastOperation(value)
+                this.setMyScreen();
             }
             else if(isNaN(value)){ 
 
@@ -92,7 +114,7 @@ class calcController{
             this.pushOperation(value);
         }
         this.displayCalc = this._operation.join("");
-        console.log(this._operation); 
+        //console.log(this._operation); 
     }
     setError(){
         this.displayCalc = "Error";
