@@ -7,6 +7,7 @@ class calcController{
         this._lastOperator = '+';
         this._lastNumber = 0;
         this._wasPercent;
+        this.method = false;
         this.lang = "pt-BR";
         this.initialize(); 
         this.initButtonEvens(); 
@@ -55,7 +56,7 @@ class calcController{
     }
     MyScreen(showingMethod){
         if(showingMethod){
-            for (let i = this._operation.indexOf(this.LastOperation); i > -1; i--){
+            for (let i = this._operation.indexOf(this.lastOperation); i > -1; i--){
                 if (!isNaN(this._operation[i])){
                     this.displayCalc = this._operation[i];
                     break;
@@ -119,7 +120,7 @@ class calcController{
                 if (value !== '=') this.pushOperation(value);
             }
         }
-        this.MyScreen(false); //Doesn't matter
+        this.MyScreen(this.method); //Doesn't matter
     }
     pushOperation(value){
         this._operation.push(value);
@@ -128,23 +129,34 @@ class calcController{
     isOperator(value){
         return ['+', '-', '*', '/', '%'].indexOf(value) > -1;
     }
+    addDot(){
+        if(this.lastOperation.toString().split('').indexOf('.') < 0){
+            if (this.isOperator(this.lastOperation) || !this.lastOperation){
+                this.pushOperation('0.');   
+            }
+            else{
+                this.lastOperation = this.lastOperation.toString() + '.';
+            }
+        }
+        this.MyScreen(this.method);
+    }
     addOperation(value){
-        if(isNaN(this.LastOperation)){ 
+        if(isNaN(this.lastOperation)){ 
             if(this.isOperator(value)){ 
-                this.LastOperation = value;
+                this.lastOperation = value;
             }
             else { 
                 this.pushOperation(value);
             }
         }
         else if(!isNaN(value)){ 
-            let newValue = this.LastOperation.toString() + value.toString();
-            this.LastOperation = parseInt(newValue);
+            let newValue = this.lastOperation.toString() + value.toString();
+            this.lastOperation = newValue;
         }
         else { 
             this.pushOperation(value);
         }
-        this.MyScreen(false);
+        this.MyScreen(this.method);
     }
     execBtn(value){
         switch(value){
@@ -169,6 +181,9 @@ class calcController{
             case 'porcento':
                 this.addOperation('%');
                 break;
+            case 'ponto':
+                this.addDot();
+                break;
             case 'igual':
                 if(this._operation.length >= 3 || this._operation.length == 1) this.equalOperation('=');
                 break;
@@ -182,7 +197,7 @@ class calcController{
             case '7':
             case '8':
             case '9':
-                this.addOperation(parseInt(value));
+                this.addOperation(value);
                 break;
             default:
                 this.displayCalc = "ERR";
@@ -209,7 +224,7 @@ class calcController{
     get displayDate(){
         return new Date();
     }
-    get LastOperation(){
+    get lastOperation(){
         return this._operation[this._operation.length - 1]; 
     }
     set displayCalc(value){
@@ -221,7 +236,7 @@ class calcController{
     set displayDate(value){
         this._dateEl.innerHTML = value;
     }
-    set LastOperation(value){
+    set lastOperation(value){
         this._operation[this._operation.length - 1] = value; 
     }
 }
