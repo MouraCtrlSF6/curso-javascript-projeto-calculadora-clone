@@ -304,7 +304,6 @@ class calcController{
                 break;
         }
         this.playSound(this._soundOnOff);
-    
     }
     roundValue = function(num) {
         if(num > 0) var decimalPlaces = 3;
